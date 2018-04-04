@@ -30,7 +30,7 @@ int main()
   };
 
   RDI::Public::Text text{
-    "24345543", // text you;d like to display
+    "24345543", // text you'd like to display
     10, // size
     100, // x coordinate
     100 // y coordinate as to where you'd like the text to be displayed on the image
