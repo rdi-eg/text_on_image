@@ -257,7 +257,7 @@ std::vector<std::string> make_text_overlay(std::string text)
 	using namespace Internal;
 	std::vector<std::string> text_overlay(TEXT_OVERLAY_SIZE_Y, "");
 
-	for(char c : text.text)
+        for(char c : text)
 	{
 		PixelsMap::const_iterator it = char_to_pixels.find(c);
 		if (it == char_to_pixels.end())
