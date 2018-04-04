@@ -4,6 +4,7 @@ A small header file that helps you write text on images. (It currently supports 
 It could be helpful for debugging and stuff.
 
 # Usage
+* Needs c++14 or newer.
 * Drop the `rdi_text_on_image.h` into your project and include it.
 * It uses `stb_image_resize.h` so make sure you drop that as well.
 * You must define STB_IMAGE_RESIZE_IMPLEMENTATION before you include it.

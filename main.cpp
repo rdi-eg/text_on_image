@@ -24,7 +24,7 @@ TEST_CASE("Write a number")
 
 	RDI::Public::Text text{
 		"243455432562364567456",
-		10,
+		72,
 		100,
 		100
 	};

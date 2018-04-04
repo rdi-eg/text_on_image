@@ -4,8 +4,15 @@
 #include <vector>
 #include <map>
 #include <tuple>
+#include <memory>
 
 #include "stb_image_resize.h"
+
+/// Use this macro to create a smart pointer to an array
+#define MAKE_UNIQUE_ARRAY(TYPE, NAME, SIZE) \
+	std::unique_ptr<TYPE[]> NAME = std::make_unique<TYPE[]>((SIZE))
+
+#define TEXT_OVERLAY_SIZE_Y 18.0
 
 namespace RDI
 {
@@ -245,11 +252,10 @@ struct Text
 	size_t position_y;
 };
 
-void write_text_on_image(Image image, Text text)
+std::vector<std::string> make_text_overlay(std::string text)
 {
 	using namespace Internal;
-	float text_overlay_size_y = 18;
-	std::vector<std::string> text_overlay(text_overlay_size_y, "");
+	std::vector<std::string> text_overlay(TEXT_OVERLAY_SIZE_Y, "");
 
 	for(char c : text.text)
 	{
@@ -267,28 +273,43 @@ void write_text_on_image(Image image, Text text)
 		}
 	}
 
-	std::uint8_t* text_overlay_data = new std::uint8_t[text_overlay.size() * text_overlay[0].size()];
+	return text_overlay;
+}
 
+void write_text_on_image(Image image, Text text)
+{
+	if(!text.text.size())
+	{
+		return;
+	}
 
+	std::vector<std::string> text_overlay = make_text_overlay(text.text);
 
-	Image text_overlay_image{
-		text_overlay_data,
+	//				  Type		  , Name			 , Size
+	MAKE_UNIQUE_ARRAY(std::uint8_t, text_overlay_data, text_overlay.size() * text_overlay[0].size());
+
+	Image text_overlay_image
+	{
+		text_overlay_data.get(),
 		1,
 		text_overlay[0].size(),
 		text_overlay.size()
 	};
 
-	Image text_overlay_resized{
+	Image text_overlay_resized
+	{
 		nullptr,
 		1,
-		text_overlay_image.width * (size_t)(text.size/text_overlay_size_y),
-		text_overlay_image.height * (size_t)(text.size/text_overlay_size_y)
+		text_overlay_image.width * (size_t)(text.size/TEXT_OVERLAY_SIZE_Y),
+		text_overlay_image.height * (size_t)(text.size/TEXT_OVERLAY_SIZE_Y)
 	};
 
-	std::uint8_t* text_overlay_resized_data = new std::uint8_t[text_overlay_resized.width * text_overlay_resized.height];
-	text_overlay_resized.data = text_overlay_resized_data;
+	//				  Type		  , Name					, Size
+	MAKE_UNIQUE_ARRAY(std::uint8_t, text_overlay_resized_data, text_overlay_resized.width * text_overlay_resized.height);
 
-	for(size_t y = 0; y < text_overlay_size_y; y++)
+	text_overlay_resized.data = text_overlay_resized_data.get();
+
+	for(size_t y = 0; y < TEXT_OVERLAY_SIZE_Y; y++)
 	{
 		for(size_t x = 0; x < text_overlay[y].size(); x++)
 		{
@@ -300,8 +321,6 @@ void write_text_on_image(Image image, Text text)
 					   text_overlay_resized.data, text_overlay_resized.width, text_overlay_resized.height, 0,
 					   1);
 
-	delete[] text_overlay_data;
-
 	for(size_t y = 0; y < text_overlay_resized.height; y++)
 	{
 		for(size_t x = 0; x < text_overlay_resized.width; x++)
@@ -312,8 +331,6 @@ void write_text_on_image(Image image, Text text)
 			}
 		}
 	}
-
-	delete[] text_overlay_resized.data;
 }
 
 } // namespace Public
