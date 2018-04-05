@@ -5,7 +5,6 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 #define STB_IMAGE_WRITE_IMPLEMENTATION
-#define STB_IMAGE_RESIZE_IMPLEMENTATION
 #include "stb_image.h"
 #include "stb_image_write.h"
 #include "rdi_text_on_image.h"
@@ -13,7 +12,7 @@
 TEST_CASE("Write a number")
 {
 	int height, width, channels;
-	std::uint8_t* image_data = stbi_load("../test/001_002_mgi_118.jpg", &width, &height, &channels, 0);
+	std::uint8_t* image_data = stbi_load("../test/kitten_png_image.png", &width, &height, &channels, 0);
 
 	RDI::Public::Image image{
 		image_data,
@@ -23,7 +22,7 @@ TEST_CASE("Write a number")
 	};
 
 	RDI::Public::Text text{
-		"hey jude honey I love YOU AWIIII 923",
+		"Hey nice kitty 123",
 		72,
 		100,
 		100

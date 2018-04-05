@@ -8,6 +8,5 @@ SOURCES += main.cpp
 HEADERS += \
     rdi_text_on_image.h \
     catch.hpp \
-    stb_image_resize.h \
     stb_image.h \
     stb_image_write.h
