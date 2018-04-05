@@ -23,7 +23,7 @@ TEST_CASE("Write a number")
 	};
 
 	RDI::Public::Text text{
-		"243455432562364567456",
+		"hey jude honey I love YOU AWIIII 923",
 		72,
 		100,
 		100
