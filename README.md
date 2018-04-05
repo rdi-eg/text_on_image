@@ -1,5 +1,11 @@
 # text_on_image
-A small header file that helps you write text on images. (It currently supports numbers only lol sorry text is on the way)
+A small header file that helps you write text on images.
+It supports:
+* Letters (upper/lowercase)
+* Numbers
+* Spaces.
+
+Does **not** support any symbols.
 
 It could be helpful for debugging and stuff.
 
