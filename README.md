@@ -1,5 +1,11 @@
 # text_on_image
-A small header file that helps you write text on images. (It currently supports numbers only lol sorry text is on the way)
+A small header file that helps you write text on images.
+It supports:
+* Letters (upper/lowercase)
+* Numbers
+* Spaces.
+
+Does **not** support any symbols.
 
 It could be helpful for debugging and stuff.
 
@@ -31,8 +37,8 @@ int main()
   };
 
   RDI::Public::Text text{
-    "24345543", // text you'd like to display
-    10, // size
+    "hey jude honey I love YOU AWIIII 923", // text you'd like to display
+    23, // size
     100, // x coordinate
     100 // y coordinate as to where you'd like the text to be displayed on the image
   };
