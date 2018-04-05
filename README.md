@@ -8,6 +8,7 @@ It supports:
 Does **not** support any symbols.
 
 It could be helpful for debugging and stuff.
+It uses [stb_image_resize](https://github.com/nothings/stb/blob/master/stb_image_resize.h) under the hood to get you the desired size of text.
 
 # Usage
 * Needs c++14 or newer.
