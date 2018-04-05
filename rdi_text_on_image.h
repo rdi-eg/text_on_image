@@ -6,6 +6,42 @@
 #include <tuple>
 #include <memory>
 
+namespace RDI
+{
+namespace Public
+{
+
+struct Text
+{
+	std::string text;
+	float size;
+	size_t position_x;
+	size_t position_y;
+};
+
+// DOES NOT OWN std::uint8_t* data
+// which means you are responsible of freeing it yourself.
+struct Image
+{
+	std::uint8_t* data;
+	size_t channels;
+	size_t width;
+	size_t height;
+
+	// works with 1 channel only lol
+	std::uint8_t get_pixel(int x, int y);
+	void set_pixel(int x, int y, uint8_t value);
+};
+
+void write_text_on_image(Image image, Text text);
+
+}
+}
+
+#endif // RDI_TEXT_ON_IMAGE_H
+
+#ifdef RDI_TEXT_ON_IMAGE_IMPLEMENTATION
+
 /// Use this macro to create a smart pointer to an array
 #define MAKE_UNIQUE_ARRAY(TYPE, NAME, SIZE) \
 	std::unique_ptr<TYPE[]> NAME = std::make_unique<TYPE[]>((SIZE))
@@ -17,7 +53,8 @@ namespace RDI
 namespace Internal
 {
 
-/// BEGIN STB_IMAGE_RESIZE_IMPLEMENTATION
+/// BEGIN STB_IMAGE_RESIZE
+
 #ifdef _MSC_VER
 typedef unsigned char  stbir_uint8;
 typedef unsigned short stbir_uint16;
@@ -157,6 +194,8 @@ STBIRDEF int stbir_resize_region(  const void *input_pixels , int input_w , int 
 								   stbir_filter filter_horizontal,  stbir_filter filter_vertical,
 								   stbir_colorspace space, void *alloc_context,
 								   float s0, float t0, float s1, float t1);
+
+/// STB IMPLEMENTATION
 
 #ifndef STBIR_ASSERT
 #include <assert.h>
@@ -3592,37 +3631,19 @@ std::vector<std::string> make_text_overlay(std::string text)
 namespace Public
 {
 
-// DOES NOT OWN std::uint8_t* data
-// which means you are responsible of freeing it yourself.
-struct Image
+// works with 1 channel only lol
+std::uint8_t Image::get_pixel(int x, int y)
 {
-	std::uint8_t* data;
-	size_t channels;
-	size_t width;
-	size_t height;
+	return data[((x + y*width))];
+}
 
-	// works with 1 channel only lol
-	std::uint8_t get_pixel(int x, int y)
-	{
-		return data[((x + y*width))];
-	}
-
-	void set_pixel(int x, int y, uint8_t value)
-	{
-		for(size_t c = 0; c < channels; c++)
-		{
-			data[((x + y*width) * channels) + c] = (c == 3) ? 255 : value;
-		}
-	}
-};
-
-struct Text
+void Image::set_pixel(int x, int y, uint8_t value)
 {
-	std::string text;
-	float size;
-	size_t position_x;
-	size_t position_y;
-};
+	for(size_t c = 0; c < channels; c++)
+	{
+		data[((x + y*width) * channels) + c] = (c == 3) ? 255 : value;
+	}
+}
 
 void write_text_on_image(Image image, Text text)
 {
@@ -3686,4 +3707,4 @@ void write_text_on_image(Image image, Text text)
 
 } // namespace RDI
 
-#endif // RDI_TEXT_ON_IMAGE_H
+#endif
