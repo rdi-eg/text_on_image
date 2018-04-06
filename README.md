@@ -62,3 +62,12 @@ or if it's a single channel then `ppppp...` where `p` is the pixel value from 0 
 ### WARNING
 `RDI::Public::write_text_on_image` changes the pixels in the image that you've passed.
 If you'd like to preserve the original image, take a copy before sending it to this function.
+
+# Contributing
+Well you'll have to understand the code. 
+
+* The first part of the header are decalaration.
+* And then there is the implementation of stb_image_resize (I copied the whole thing and pasted it in).
+* After that you'll find a map called `char_to_pixels` which as the name implies, maps each character to the pixels that form it.
+* There's the `make_text_overlay` function which takes the text and creates an image overlay out of it using the `char_to_pixels` map.
+* lastly `write_text_on_image` which the user actually calls. It basically calls `make_text_overlay`, resizes the text_overlay image and then applies it.
