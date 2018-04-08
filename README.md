@@ -1,4 +1,7 @@
 # text_on_image
+
+![](example.jpg)
+
 A small header file that helps you write text on images.
 It supports:
 * Letters (upper/lowercase)
