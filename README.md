@@ -1,3 +1,5 @@
+**This repo has been moved to [Gitlab](https://gitlab.com/rdi-eg/text_on_image) and is no longer maintained here.**
+
 # text_on_image
 
 ![](example.jpg)
